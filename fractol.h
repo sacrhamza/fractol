@@ -38,5 +38,11 @@ typedef struct fractal
 	float	y;
 }	t_fractal;
 
+typedef struct s_translation
+{
+	float	vertical;
+	float	horizontal;
+}	t_translation;
+
 void	close_window_and_exit(t_vars *vars);
 #endif
