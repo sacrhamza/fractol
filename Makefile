@@ -27,7 +27,7 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 
-DATE = bash -c "date"
+DATE = $(shell date +%F/%H/%M)
 
 push:
 	push "fractol automatic push $(DATE)"
