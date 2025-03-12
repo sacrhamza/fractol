@@ -1,0 +1,12 @@
+c Value	Name/Description
+c = -0.123 + 0.745i	Douady's Rabbit (3-fold symmetry).
+c = -0.75	San Marco Fractal (resembles a cathedral).
+c = -0.8 + 0.156i	Dragon Fractal (serpentine branches).
+c = -0.70176 + 0.3842i	"Sea Horse Valley" (swirling tendrils).
+
+1. Classic Julia Sets
+c Value	Description
+c = 0	The unit circle (trivial Julia set).
+c = i	Spiral patterns with rotational symmetry.
+c = -0.4 + 0.6i	Intricate spirals and branching structures.
+
