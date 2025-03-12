@@ -27,5 +27,7 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 
+DATE = $(date)
+
 push:
-	push "fractol automatic push $(date)"
+	push "fractol automatic push $(DATE)"
