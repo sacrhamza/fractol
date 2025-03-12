@@ -44,6 +44,9 @@ typedef struct s_translation
 	float	horizontal;
 }	t_translation;
 
-int	close_window_and_exit(t_vars *vars);
 float	power2(float number);
+int		ft_tolower(int c);
+void	ft_strlower(char *str);
+int		close_window_and_exit(t_vars *vars);
+
 #endif

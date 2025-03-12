@@ -92,7 +92,6 @@ int	close_window_and_exit(t_vars *vars)
 	mlx_destroy_display(vars->mlx);
 	free(vars->mlx);
 	exit (0);
-	//return (0);
 }
 
 int	main()

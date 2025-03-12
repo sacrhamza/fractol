@@ -1,4 +1,4 @@
-CC = cc
+CC = clang
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -18,7 +18,7 @@ RM = rm -f
 	$(CC) $(FLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
 $(NAME): $(OBJECT_FILES)
-	$(CC) $(FLAGS) $^ -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $@ -lone
+	$(CC) $(FLAGS) $^ -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $@  -fsanitize=address
 
 
 clean:
