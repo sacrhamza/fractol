@@ -31,7 +31,7 @@ int	is_within(float x, float y, t_translation translation)
 	float	magnitude;
 
 	magnitude = 0;
-	while (magnitude < 4 && iter < 5)
+	while (magnitude < 4 && iter < 30)
 	{
 		fractal1 = iteration(fractal, iter, translation);
 		magnitude = power2(fractal1.x) + power2(fractal1.y);
@@ -77,7 +77,7 @@ int	moves(int keycode, t_vars *vars)
 		translation.horizontal += 0.04;
 	else if (keycode == ESC)
 		close_window_and_exit(vars);
-	printf("vertical = %f horizontal = %f\n", translation.vertical, translation.horizontal);
+	//printf("vertical = %f horizontal = %f\n", translation.vertical, translation.horizontal);
 	draw_fractol(vars, 1000, 1000, translation);
 
 	//mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, bye, 0);
@@ -104,7 +104,9 @@ int	mouse_up_down(int button, int x, int y, void *param)
 	else if (button == MOUSE_DOWN)
 		vars->zoom -= 0.1;
 	moves(0, vars);
-	printf("button = %d | x = %d | y = %d | %p\n", button, x, y, vars);
+	(void)x;
+	(void)y;
+	//printf("button = %d | x = %d | y = %d | %p\n", button, x, y, vars);
 	return (0);
 }
 
