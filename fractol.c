@@ -8,30 +8,21 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-float	power2(float number)
-{
-	return (pow(number, 2));
-}
-
-
-
-float bye;
-
-t_fractal	iteration(t_fractal fractal, int count)
+t_fractal	iteration(t_fractal fractal, int count, t_translation translation)
 {
 	t_fractal new = {0, 0};
 	float	tmpx;
 	while (count)
-	{
+	{	
 		tmpx = new.x;
-		new.x = power2(new.x) - power2(new.y) + fractal.x + bye;
-		new.y = 2 * tmpx * new.y + fractal.y;
+		new.x = power2(new.x) - power2(new.y) + fractal.x + translation.vertical;
+		new.y = 2 * tmpx * new.y + fractal.y + translation.horizontal;
 		count--;
 	}
 	return (new);
 }
 
-int	is_within(float x, float y)
+int	is_within(float x, float y, t_translation translation)
 {
 	int iter = 0;
 	t_fractal fractal = {x, y};
@@ -42,7 +33,7 @@ int	is_within(float x, float y)
 	magnitude = 0;
 	while (magnitude < 4 && iter < 50)
 	{
-		fractal1 = iteration(fractal, iter);
+		fractal1 = iteration(fractal, iter, translation);
 		magnitude = power2(fractal1.x) + power2(fractal1.y);
 		iter++;
 	}
@@ -52,54 +43,57 @@ int	is_within(float x, float y)
 	//return (iter * pow(265, 1));
 }
 
-int	draw_fractol(void *mlx, void *mlx_window, int x_size, int y_size)
+int	draw_fractol(t_vars *vars, int x_size, int y_size, t_translation translation)
 {
-	int	y = 0;
-	int	x = 0;
-	t_data	img;
-	img.img = mlx_new_image(mlx, x_size, y_size);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	int	y;
+	int	x;
+	vars->img.img = mlx_new_image(vars->mlx, x_size, y_size);
+	vars->img.addr = mlx_get_data_addr(vars->img.img, &vars->img.bits_per_pixel, &vars->img.line_length, &vars->img.endian);
 	y = 0;
 	while (y < y_size)
 	{
 		x = 0;
 		while (x < x_size)
 		{
-			int color = is_within((-x_size / 2 + (float)x) / (x_size / 4), (y_size /2 - (float)y) / (y_size / 4)); 
-			my_mlx_pixel_put(&img, x, y, color);
+			int color = is_within((-x_size / 2 + (float)x) / (x_size / 4), (y_size /2 - (float)y) / (y_size / 4), translation);	 
+			my_mlx_pixel_put(&vars->img, x, y, color);
 			x++;
 		}
 		y++;
 	}
-	mlx_put_image_to_window(mlx, mlx_window, img.img, 0, 0);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+	return (0);
 }
 
 int	moves(int keycode, t_vars *vars)
 {
+	static t_translation translation;
+
 	if (keycode == RARROW)
-		bye += 0.01;
+		translation.vertical -= 0.04;
 	else if (keycode == LARROW)
-		bye -= 0.01;
-	/*else if (keycode == UPARROW)
-		;
+		translation.vertical += 0.04;
+	else if (keycode == UARROW)
+		translation.horizontal -= 0.04;
 	else if (keycode == DARROW)
-		;*/
+		translation.horizontal += 0.04;
 	else if (keycode == ESC)
 		close_window_and_exit(vars);
-	draw_fractol(vars->mlx, vars->win, 1000, 1000);
-	printf("%d\n", keycode);
+	draw_fractol(vars, 1000, 1000, translation);
+
+	//mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, bye, 0);
 	return (0);
 }
 
-
-void	close_window_and_exit(t_vars *vars)
+int	close_window_and_exit(t_vars *vars)
 {
+	mlx_destroy_image(vars->mlx, vars->img.img);
 	mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);
 	free(vars->mlx);
 	exit (0);
+	//return (0);
 }
-
 
 int	main()
 {
@@ -109,13 +103,16 @@ int	main()
 
 	//initilize mlx pointer
 	vars.mlx = mlx_init();
+	if (vars.mlx == NULL)
+		return (1);
 
 	//create a window for my fractol project
 	vars.win = mlx_new_window(vars.mlx, x_size, y_size, "fractol");
 
+	draw_fractol(&vars, x_size, y_size, (t_translation){0, 0});
 	mlx_hook(vars.win, 2, 1, moves, &vars); 
 
-	draw_fractol(vars.mlx, vars.win, x_size, y_size);
+	mlx_hook(vars.win, 17, 0, close_window_and_exit, &vars);
 
 	mlx_loop(vars.mlx);	
 }
