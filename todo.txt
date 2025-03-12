@@ -1,3 +1,4 @@
 (1) implement zoom in and out not just scaling
 (2) tracking the mouse
 (3) make fractol faster
+(4) norm every file

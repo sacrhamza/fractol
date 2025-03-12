@@ -100,9 +100,9 @@ int	mouse_up_down(int button, int x, int y, void *param)
 
 	vars = param;
 	if (button == MOUSE_UP)
-		vars->zoom += 0.1;
+		vars->zoom += 0.5;
 	else if (button == MOUSE_DOWN)
-		vars->zoom -= 0.1;
+		vars->zoom -= 0.5;
 	moves(0, vars);
 	(void)x;
 	(void)y;
