@@ -9,6 +9,8 @@
 # define RARROW 65363
 # define UARROW 65362 
 # define DARROW 65364
+# define MOUSE_UP 5
+# define MOUSE_DOWN 4 
 
 typedef struct s_data
 {
@@ -19,11 +21,18 @@ typedef struct s_data
 	int		endian;
 }	t_data;
 
+/*typedef s_zoom
+{
+	float	in;
+	float	out;
+}	t_zoom;*/
+
 typedef struct s_vars
 {
 	void	*mlx;
 	void	*win;
 	t_data	img;
+	float	zoom;
 }	t_vars;
 
 typedef struct s_dimention
