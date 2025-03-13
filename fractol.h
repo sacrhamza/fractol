@@ -14,6 +14,8 @@
 # define WIDTH 400 
 # define HEIGHT 400 
 
+# define power2(var) (var * var)
+
 typedef struct s_data
 {
 	void	*img;
@@ -51,7 +53,6 @@ typedef struct s_translation
 	double	horizontal;
 }	t_translation;
 
-float	power2(float number);
 int		ft_tolower(int c);
 void	ft_strlower(char *str);
 int		close_window_and_exit(t_vars *vars);

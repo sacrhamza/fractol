@@ -15,7 +15,7 @@ t_fractal	iteration(t_fractal fractal, int count, t_translation translation)
 	while (count)
 	{	
 		tmpx = new.x;
-		new.x = (new.x * new.x) - (new.y * new.y) + fractal.x + translation.vertical;
+		new.x = power2(new.x) - power2(new.y) + fractal.x + translation.vertical;
 		new.y = 2 * tmpx * new.y + fractal.y + translation.horizontal;
 		count--;
 	}
@@ -31,10 +31,10 @@ int	is_within(float x, float y, t_translation translation)
 	float	magnitude;
 
 	magnitude = 0;
-	while (magnitude < 4 && iter < 60)
+	while (magnitude < 4 && iter < 30)
 	{
 		fractal1 = iteration(fractal, iter, translation);
-		magnitude = (fractal1.x * fractal1.x) + (fractal1.y * fractal1.y);
+		magnitude = power2(fractal1.x) + power2(fractal1.y);
 		iter++;
 	}
 	return (iter * 1000);
@@ -46,6 +46,7 @@ int	draw_fractol(t_vars *vars,  t_translation translation)
 	float	x;
 
 	y = 0;
+	//printf("%lf %lf\n", vars->x_offset, vars->y_offset);
 	while (y < HEIGHT)
 	{
 		x = 0;
