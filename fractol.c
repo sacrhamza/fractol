@@ -17,27 +17,13 @@ int get_color(int iterations, int max_iterations) {
     return (r << 16) | (g << 8) | b;
 }
 
-/*t_fractal	iteration(t_fractal fractal, int count, t_translation translation)
-{
-	t_fractal new = {0, 0};
-	double	tmpx;
-	while (count)
-	{	
-		tmpx = new.x;
-		new.x = power2(new.x) - power2(new.y) + fractal.x + translation.vertical;
-		new.y = 2 * tmpx * new.y + fractal.y + translation.horizontal;
-		count--;
-	}
-	return (new);
-}*/
-
 int	is_within(double x, double y, t_translation translation)
 {
 	int iter = 0;
 	t_fractal z = {0, 0};
 	double	tmpx;
 
-	while (power2(z.x) + power2(z.y) < 4 && iter < 100)
+	while (power2(z.x) + power2(z.y) < 4 && iter < 300)
 	{
 		tmpx = z.x;
 		z.x = power2(z.x) - power2(z.y) + x + translation.vertical;
