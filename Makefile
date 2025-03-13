@@ -27,6 +27,8 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 
+re: fclean all
+
 DATE = $(shell date +%F/%H/%M)
 
 push:

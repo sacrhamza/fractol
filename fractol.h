@@ -11,6 +11,8 @@
 # define DARROW 65364
 # define MOUSE_UP 5
 # define MOUSE_DOWN 4 
+# define WIDTH 400 
+# define HEIGHT 400 
 
 typedef struct s_data
 {
@@ -21,18 +23,14 @@ typedef struct s_data
 	int		endian;
 }	t_data;
 
-/*typedef s_zoom
-{
-	float	in;
-	float	out;
-}	t_zoom;*/
-
 typedef struct s_vars
 {
 	void	*mlx;
 	void	*win;
 	t_data	img;
-	float	zoom;
+	double	zoom;
+	double	x_offset;
+	double	y_offset;
 }	t_vars;
 
 typedef struct s_dimention
@@ -43,14 +41,14 @@ typedef struct s_dimention
 
 typedef struct fractal
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }	t_fractal;
 
 typedef struct s_translation
 {
-	float	vertical;
-	float	horizontal;
+	double	vertical;
+	double	horizontal;
 }	t_translation;
 
 float	power2(float number);

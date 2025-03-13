@@ -15,7 +15,7 @@ t_fractal	iteration(t_fractal fractal, int count, t_translation translation)
 	while (count)
 	{	
 		tmpx = new.x;
-		new.x = power2(new.x) - power2(new.y) + fractal.x + translation.vertical;
+		new.x = (new.x * new.x) - (new.y * new.y) + fractal.x + translation.vertical;
 		new.y = 2 * tmpx * new.y + fractal.y + translation.horizontal;
 		count--;
 	}
@@ -31,29 +31,28 @@ int	is_within(float x, float y, t_translation translation)
 	float	magnitude;
 
 	magnitude = 0;
-	while (magnitude < 4 && iter < 30)
+	while (magnitude < 4 && iter < 60)
 	{
 		fractal1 = iteration(fractal, iter, translation);
-		magnitude = power2(fractal1.x) + power2(fractal1.y);
+		magnitude = (fractal1.x * fractal1.x) + (fractal1.y * fractal1.y);
 		iter++;
 	}
-	//printf("%f | %f | %d\n", x, y, iter);
-	//return (0x00000000 + iter * 50 + (iter / 100 * pow(256, 4)));
-	//return (0x0000000 + iter * 265 * 265 * 265 * 2);
-	return (iter * pow(10, 3));
+	return (iter * 1000);
 }
 
-int	draw_fractol(t_vars *vars, int x_size, int y_size, t_translation translation)
+int	draw_fractol(t_vars *vars,  t_translation translation)
 {
-	int	y;
-	int	x;
+	float	y;
+	float	x;
+
 	y = 0;
-	while (y < y_size)
+	while (y < HEIGHT)
 	{
 		x = 0;
-		while (x < x_size)
+		while (x < WIDTH)
 		{
-			int color = is_within((-x_size / 2 + ((float)x)) / (x_size / vars->zoom), (y_size /2 - ((float)y)) / (y_size / vars->zoom), translation);	 
+			int color = is_within(((-1 * vars->x_offset) / 2 + (x)) / (WIDTH / vars->zoom), (vars->y_offset /2 - (y)) / (HEIGHT / vars->zoom), translation);	 
+			//printf("%f\n", (-WIDTH / 2 + (x)) / (WIDTH / vars->zoom));
 			my_mlx_pixel_put(&vars->img, x, y, color);
 			x++;
 		}
@@ -67,20 +66,20 @@ int	moves(int keycode, t_vars *vars)
 {
 	static t_translation translation;
 
-	if (keycode == RARROW)
-		translation.vertical -= 0.04;
-	else if (keycode == LARROW)
-		translation.vertical += 0.04;
-	else if (keycode == UARROW)
-		translation.horizontal -= 0.04;
-	else if (keycode == DARROW)
-		translation.horizontal += 0.04;
-	else if (keycode == ESC)
-		close_window_and_exit(vars);
-	//printf("vertical = %f horizontal = %f\n", translation.vertical, translation.horizontal);
-	draw_fractol(vars, 1000, 1000, translation);
-
-	//mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, bye, 0);
+	if ((keycode >= 65361 && keycode <= 65364) || keycode == ESC)
+	{
+		if (keycode == RARROW)
+			translation.vertical -= 0.04 * vars->zoom;
+		else if (keycode == LARROW)
+			translation.vertical += 0.04 * vars->zoom;
+		else if (keycode == UARROW)
+			translation.horizontal -= 0.04 * vars->zoom;
+		else if (keycode == DARROW)
+			translation.horizontal += 0.04 * vars->zoom;
+		else if (keycode == ESC)
+			close_window_and_exit(vars);
+	}
+	draw_fractol(vars, translation);
 	return (0);
 }
 
@@ -100,21 +99,18 @@ int	mouse_up_down(int button, int x, int y, void *param)
 
 	vars = param;
 	if (button == MOUSE_UP)
-		vars->zoom += 0.5;
+		vars->zoom *= 0.5;
 	else if (button == MOUSE_DOWN)
-		vars->zoom -= 0.5;
+		vars->zoom /= 0.5;
 	moves(0, vars);
 	(void)x;
 	(void)y;
-	//printf("button = %d | x = %d | y = %d | %p\n", button, x, y, vars);
 	return (0);
 }
 
 int	main()
 {
 	t_vars	vars;
-	int	(y_size) = 1000;
-	int	(x_size) = 1000;
 
 	//initilize mlx pointer
 	vars.mlx = mlx_init();
@@ -122,16 +118,18 @@ int	main()
 		return (1);
 
 	//create a window for my fractol project
-	vars.win = mlx_new_window(vars.mlx, x_size, y_size, "fractol");
+	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "fractol");
 
 	//create a new image
-	vars.img.img = mlx_new_image(vars.mlx, x_size, y_size);
+	vars.img.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
 	//TO DO: understand every member of every struct you have used
 	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 
 	vars.zoom = 4;
+	vars.x_offset = WIDTH;
+	vars.y_offset = HEIGHT;
 
-	draw_fractol(&vars, x_size, y_size, (t_translation){0, 0});
+	draw_fractol(&vars, (t_translation){0, 0});
 	mlx_hook(vars.win, 2, 1, moves, &vars); 
 
 	mlx_hook(vars.win, 17, 0, close_window_and_exit, &vars);
