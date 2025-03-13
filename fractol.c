@@ -8,10 +8,19 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-t_fractal	iteration(t_fractal fractal, int count, t_translation translation)
+int get_color(int iterations, int max_iterations) {
+    double t = (double)iterations / max_iterations;
+    // Smooth interpolation between colors
+    int r = (int)(9 * (1 - t) * t * t * t * 255);
+    int g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
+    int b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+    return (r << 16) | (g << 8) | b;
+}
+
+/*t_fractal	iteration(t_fractal fractal, int count, t_translation translation)
 {
 	t_fractal new = {0, 0};
-	float	tmpx;
+	double	tmpx;
 	while (count)
 	{	
 		tmpx = new.x;
@@ -20,40 +29,36 @@ t_fractal	iteration(t_fractal fractal, int count, t_translation translation)
 		count--;
 	}
 	return (new);
-}
+}*/
 
-int	is_within(float x, float y, t_translation translation)
+int	is_within(double x, double y, t_translation translation)
 {
 	int iter = 0;
-	t_fractal fractal = {x, y};
-	t_fractal fractal1;
+	t_fractal z = {0, 0};
+	double	tmpx;
 
-	float	magnitude;
-
-	magnitude = 0;
-	while (magnitude < 4 && iter < 30)
+	while (power2(z.x) + power2(z.y) < 4 && iter < 100)
 	{
-		fractal1 = iteration(fractal, iter, translation);
-		magnitude = power2(fractal1.x) + power2(fractal1.y);
+		tmpx = z.x;
+		z.x = power2(z.x) - power2(z.y) + x + translation.vertical;
+		z.y = 2 * tmpx * z.y + y + translation.horizontal;
 		iter++;
 	}
-	return (iter * 1000);
+	return (get_color(iter, 50));
 }
 
 int	draw_fractol(t_vars *vars,  t_translation translation)
 {
-	float	y;
-	float	x;
+	double	y;
+	double	x;
 
 	y = 0;
-	//printf("%lf %lf\n", vars->x_offset, vars->y_offset);
 	while (y < HEIGHT)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
 			int color = is_within(((-1 * vars->x_offset) / 2 + (x)) / (WIDTH / vars->zoom), (vars->y_offset /2 - (y)) / (HEIGHT / vars->zoom), translation);	 
-			//printf("%f\n", (-WIDTH / 2 + (x)) / (WIDTH / vars->zoom));
 			my_mlx_pixel_put(&vars->img, x, y, color);
 			x++;
 		}

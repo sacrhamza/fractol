@@ -11,8 +11,8 @@
 # define DARROW 65364
 # define MOUSE_UP 5
 # define MOUSE_DOWN 4 
-# define WIDTH 400 
-# define HEIGHT 400 
+# define WIDTH 800 
+# define HEIGHT 800 
 
 # define power2(var) (var * var)
 

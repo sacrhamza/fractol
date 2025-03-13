@@ -4,7 +4,7 @@ FLAGS = -Wall -Wextra -Werror
 
 NAME = fractol
 
-FILES = fractol.c fractol_utils.c
+FILES = fractol.c #fractol_utils.c
 
 OBJECT_FILES = $(FILES:%.c=%.o)
 
