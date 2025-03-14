@@ -43,16 +43,21 @@ int	double_valid(char *str)
 {
 	int	i;
 	int	has_dot;
+	int	has_i;
 
 	has_dot = 0;
 	i = 0;
+	has_i = 0;
 	while (str[i])
 	{
-		if ((str[i] == '.' && i == 0) || has_dot > 1)
+		if ((str[i] == '.' && i == 0) || has_dot > 1 || has_i > 1)
 			return (NBR_NOT_VALID);
-		if (str[i] == '.')
+		if (str[i] == '.' || str[i] == 'i')
 		{
-			has_dot++;
+			if (str[i] == '.')
+				has_dot++;
+			else if (str[i] == 'i')
+				has_i++;
 			i++;
 			continue ;
 		}
