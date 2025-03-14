@@ -13,6 +13,7 @@
 # define MOUSE_DOWN 4 
 # define WIDTH 800 
 # define HEIGHT 800 
+# define SAMPLE_ITERATION 100
 
 # define power2(var) (var * var)
 

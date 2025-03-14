@@ -72,7 +72,7 @@ int	main()
 	vars.zoom = 4;
 	vars.translation.vertical = 0;
 	vars.translation.horizontal = 0;
-	vars.max_iteration = 70;
+	vars.max_iteration = SAMPLE_ITERATION;
 
 	draw_fractol(&vars);
 	mlx_hook(vars.win, 2, 1, moves, &vars); 
@@ -81,5 +81,5 @@ int	main()
 
 	mlx_mouse_hook(vars.win, mouse_up_down, &vars);
 
-	mlx_loop(vars.mlx);	
+	mlx_loop(vars.mlx);
 }
