@@ -25,21 +25,21 @@ typedef struct s_data
 	int		endian;
 }	t_data;
 
+typedef struct s_translation
+{
+	double	vertical;
+	double	horizontal;
+}	t_translation;
+
 typedef struct s_vars
 {
 	void	*mlx;
 	void	*win;
 	t_data	img;
 	double	zoom;
-	double	x_offset;
-	double	y_offset;
+	t_translation translation;
+	int	max_iteration;
 }	t_vars;
-
-typedef struct s_dimention
-{
-	int	x_size;
-	int	y_size;	
-}	t_dimention;
 
 typedef struct fractal
 {
@@ -47,14 +47,11 @@ typedef struct fractal
 	double	y;
 }	t_fractal;
 
-typedef struct s_translation
-{
-	double	vertical;
-	double	horizontal;
-}	t_translation;
-
 int		ft_tolower(int c);
 void	ft_strlower(char *str);
 int		close_window_and_exit(t_vars *vars);
-
+int	moves(int keycode, t_vars *vars);
+int	mouse_up_down(int button, int x, int y, void *param);
+int	draw_fractol(t_vars *vars);
+int	close_window_and_exit(t_vars *vars);
 #endif

@@ -1,0 +1,20 @@
+re2 + img2 < 4
+(10re^2 + 10img^2) < 400
+
+we have: 1pixel = 0.01 value
+so:	200pixel = 2value
+so:	200pixel
+
+
+width = 200
+we have that equation: (-WIDTH / 2 + x) / (WIDTH / zoom)
+so:			(-200 / 2 + 10)  / (200 /4)
+so:			(-100 + 10) / 50
+so:			(-90 / 50)
+so:			(1.8)
+
+width = 400
+so:			(-400 / 2 + 10) / (400 / 4)
+so:			(-200 + 10) / 100
+so:			190 / 100
+so:			1.9
