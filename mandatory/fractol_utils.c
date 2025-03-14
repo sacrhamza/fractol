@@ -29,6 +29,16 @@ double	ft_atof(char *str)
 	return (2.0);	
 }
 
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+int	ft_isspace(int c)
+{
+	return ((c >= 9 && c <= 13) || c == ' ');
+}
+
 int	double_valid(char *str)
 {
 	int	i;
@@ -46,8 +56,8 @@ int	double_valid(char *str)
 			i++;
 			continue ;
 		}
-		//if (ft_isdigit(str[i]) == 0 && ft_isspace(str[i]) == 0) 
-		//return (NBR_VALID);
+		if (ft_isdigit(str[i]) == 0 && ft_isspace(str[i]) == 0) 
+			return (NBR_NOT_VALID);
 		i++;		
 	}	
 	return (NBR_VALID);
