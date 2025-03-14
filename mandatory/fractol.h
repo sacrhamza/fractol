@@ -73,4 +73,5 @@ void	fractal_init();
 void	display_help(void);
 double	power2(double number);
 int	ft_printf(char *format, ...);
+int	double_valid(char *str);
 #endif
