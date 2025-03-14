@@ -1,6 +1,6 @@
 #include "fractol.h"
 
-float	power2(float number)
+double	power2(double number)
 {
 	return (pow(number, 2));
 }
@@ -10,7 +10,7 @@ int	ft_tolower(int c)
 	return ((c >= 'A' && c <= 'Z') * 32 + c);
 }
 
-void	ft_strlower(char *str)
+char	*ft_strlower(char *str)
 {
 	size_t	index;
 
@@ -20,4 +20,35 @@ void	ft_strlower(char *str)
 		str[index] = ft_tolower(str[index]);
 		index++;
 	}
+	return (str);
+}
+
+double	ft_atof(char *str)
+{
+	(void)str;
+	return (2.0);	
+}
+
+int	double_valid(char *str)
+{
+	int	i;
+	int	has_dot;
+
+	has_dot = 0;
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == '.' && i == 0) || has_dot > 1)
+			return (NBR_NOT_VALID);
+		if (str[i] == '.')
+		{
+			has_dot++;
+			i++;
+			continue ;
+		}
+		//if (ft_isdigit(str[i]) == 0 && ft_isspace(str[i]) == 0) 
+		//return (NBR_VALID);
+		i++;		
+	}	
+	return (NBR_VALID);
 }

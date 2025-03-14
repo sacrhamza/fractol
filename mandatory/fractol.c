@@ -19,8 +19,8 @@ int	is_within(t_fractal c, t_vars *vars)
 	while ((power2(z.x) + power2(z.y) < 4) && (iteration < vars->max_iteration))
 	{
 		tmpx = z.x;
-		z.x = power2(z.x) - power2(z.y) + c.x + vars->translation.vertical;
-		z.y = (2 * tmpx * z.y) + c.y + vars->translation.horizontal;
+		z.x = power2(z.x) - power2(z.y) + c.x + vars->translation.horizontal;
+		z.y = (2 * tmpx * z.y) + c.y + vars->translation.vertical;
 		iteration++;
 	}
 	return (iteration * 256 + (float)iteration / 9 * 256 * 256);
@@ -51,20 +51,26 @@ int	draw_fractol(t_vars *vars)
 	return (0);
 }
 
-int	main()
+void	fractal_init()
 {
 	t_vars	vars;
 
 	//initilize mlx pointer
 	vars.mlx = mlx_init();
 	if (vars.mlx == NULL)
-		return (1);
+		return ;
 
 	//create a window for my fractol project
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "fractol");
 
 	//create a new image
 	vars.img.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
+	if (vars.img.img == NULL)
+	{
+		mlx_destroy_display(vars.mlx);
+		free(vars.mlx);
+		return ;
+	}
 
 	//TO DO: understand every member of every struct you have used
 	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
@@ -82,4 +88,15 @@ int	main()
 	mlx_mouse_hook(vars.win, mouse_up_down, &vars);
 
 	mlx_loop(vars.mlx);
+}
+
+int	main(int argc, char *argv[])
+{
+	if (argc >= 2)
+	{
+		check_arguments(argc - 1, argv + 1);
+		fractal_init();
+	}	
+	else
+		display_help();
 }
