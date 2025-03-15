@@ -1,76 +1,82 @@
 #include "fractol.h"
 
-double	power2(double number)
+
+
+int	check_sign(t_check *check, int index)
 {
-	return (pow(number, 2));
+	int	is_sign;
+
+	is_sign = ft_issign(check->str[index]);
+	if ((is_sign && (!ft_isdigit(check->str[index + 1]) 
+		&& check->str[index + 1] != 'i'))
+			|| (is_sign && index != 0))
+		return (NBR_NOT_VALID);	
+	if (is_sign)
+		check->sign_number++;
+	if (check->sign_number > 1)
+		return (NBR_NOT_VALID);
+	return (NBR_VALID);
 }
 
-int	ft_tolower(int c)
+int	check_dot(t_check *check, int index)
 {
-	return ((c >= 'A' && c <= 'Z') * 32 + c);
+	int	is_dot;
+	int	len;
+
+	len = check->len;
+	is_dot = check->str[index] == '.';
+	if ((is_dot && ft_isdigit(check->str[index + 1]) != VALID)
+		|| (is_dot && (index + 1 == len || index == 0)))
+		return (NBR_NOT_VALID);
+	if (is_dot)
+		check->dot_number++;
+	if (check->dot_number > 1)
+		return (NBR_NOT_VALID);
+	return (NBR_VALID);
 }
 
-char	*ft_strlower(char *str)
+int	check_valid_chars(char c)
 {
-	size_t	index;
-
-	index = 0;
-	while (str[index])
-	{
-		str[index] = ft_tolower(str[index]);
-		index++;
-	}
-	return (str);
+	if (!ft_issign(c) && !ft_isdigit(c) && c != 'i' && c != '.' && !ft_isspace(c))
+		return (NBR_NOT_VALID);
+	return (NBR_VALID);
 }
 
-double	ft_atof(char *str)
+int	check_complex_nbr(t_check *check, int index)
 {
-	(void)str;
-	return (2.0);	
-}
+	int	is_complex_nbr;
+	int	len;
 
-int	ft_isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-int	ft_isspace(int c)
-{
-	return ((c >= 9 && c <= 13) || c == ' ');
-}
-
-int	ft_issign(int c)
-{
-	return (c == '-' || c == '+');
+	len = check->len;
+	is_complex_nbr = check->str[index] == 'i';
+	if (is_complex_nbr && index + 1 != len)
+		return (NBR_NOT_VALID);
+	if (is_complex_nbr)
+		check->complex_number++;
+	if (check->complex_number > 1)
+		return (NBR_NOT_VALID);
+	return (NBR_VALID);
 }
 
 int	double_valid(char *str)
 {
-	int	i;
-	int	has_dot;
-	int	has_i;
+	size_t	i;
+	t_check check;
 
-	has_dot = 0;
+	check = (t_check){strlen(str), str, 0, 0, 0};
 	i = 0;
-	has_i = 0;
 	while (str[i])
 	{
-		if ((str[i] == '.' && i == 0)
-			|| has_dot > 1 || has_i > 1
-			|| (ft_issign(str[i]) && ft_isdigit(str[i + 1]) != 1))
+		if (check_sign(&check, i) == NBR_NOT_VALID)
 			return (NBR_NOT_VALID);
-		if (str[i] == '.' || str[i] == 'i')
-		{
-			if (str[i] == '.')
-				has_dot++;
-			else if (str[i] == 'i')
-				has_i++;
-			i++;
-			continue ;
-		}
-		if (ft_isdigit(str[i]) == 0 && ft_isspace(str[i]) == 0 && ft_issign(str[i]) == 0) 
+		if (check_dot(&check, i) == NBR_NOT_VALID)
 			return (NBR_NOT_VALID);
-		i++;		
+		if (check_complex_nbr(&check, i) == NBR_NOT_VALID)
+			return (NBR_NOT_VALID);
+		if (check_valid_chars(str[i]) == NBR_NOT_VALID)
+			return (NBR_NOT_VALID);
+		i++;	
 	}	
-	return (NBR_VALID);
+	return (NBR_VALID + check.complex_number);
 }
+

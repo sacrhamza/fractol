@@ -29,6 +29,8 @@
 
 # define NBR_NOT_VALID 0
 # define NBR_VALID 1
+# define VALID 1
+# define NBR_IS_COMPLEX 2
 
 typedef struct s_data
 {
@@ -55,11 +57,21 @@ typedef struct s_vars
 	int		max_iteration;
 }	t_vars;
 
-typedef struct fractal
+typedef struct s_fractal
 {
 	double	x;
 	double	y;
 }	t_fractal;
+
+typedef struct s_check
+{
+	size_t	len;
+	char	*str;
+	int	dot_number;
+	int	sign_number;
+	int	complex_number;
+	
+}	t_check;
 
 int		close_window_and_exit(t_vars *vars);
 int		moves(int keycode, t_vars *vars);
@@ -72,6 +84,10 @@ void	check_arguments(int n, char *argv[]);
 void	fractal_init();
 void	display_help(void);
 double	power2(double number);
+double	ft_atod(char *str);
 int	ft_printf(char *format, ...);
 int	double_valid(char *str);
+int	ft_isspace(int c);
+int	ft_issign(int c);
+int	ft_isdigit(int c);
 #endif
