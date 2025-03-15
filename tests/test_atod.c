@@ -5,6 +5,6 @@
 int main(int argc, char **argv)
 {
 	printf("%.25lf\n", ft_atod(argv[1]));
-	printf("%.100lf\n", FLT_MIN);
+	printf("%.100lf\n", FLT_MAX);
 	return (0);
 }
